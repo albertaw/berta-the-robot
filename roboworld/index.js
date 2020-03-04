@@ -30,7 +30,6 @@ function move() {
 
 function turnLeft() {
 	degree -= 90;
-	console.log(degree);
 	robot.style.transform = 'rotate(' + degree + 'deg)';
 
 	if (degree == 0 || degree % 360 == 0) {
@@ -43,7 +42,6 @@ function turnLeft() {
 	} else if (degree % 90 == 0) {
 		direction = 'NORTH';
 	} 
-	console.log(direction);
 }
 
 
