@@ -1,7 +1,7 @@
 const robot = document.getElementById('robot');
 const world = document.getElementById('world');
 let xPos = 1;
-let yPos = 1
+let yPos = 1;
 let degree = 0;
 let direction = 'EAST';
 
@@ -31,7 +31,7 @@ function move() {
 function turnLeft() {
 	degree -= 90;
 	robot.style.transform = 'rotate(' + degree + 'deg)';
-
+	
 	if (degree == 0 || degree % 360 == 0) {
 		direction = 'EAST';
 		degree = 0;
@@ -57,20 +57,21 @@ function frontIsClear() {
 
 	//a cell is 8 x 8. for the front to be clear,
 	//there shuould be 8 units of space available
-	//from the current position  
-	if (xPos <= 24 && direction == 'EAST') {
+	//from the current position. Values increase 
+	//left to right and from bottom to top. 
+	if (xPos <= 24 && facingEast()) {
 		return true;
 	}
 
-	if (xPos >= 8 && direction == 'WEST') {
+	if (xPos >= 8 && facingWest()) {
 		return true;
 	}
 
-	if (yPos <= 24 && direction == 'NORTH') {
+	if (yPos <= 24 && facingNorth()) {
 		return true;
 	}
 
-	if (yPos >= 8 && direction == 'SOUTH') {
+	if (yPos >= 8 && facingSouth()) {
 		return true;
 	}
 
@@ -101,3 +102,6 @@ function turnOff() {
 		robot.style.transform = 'rotate(' + degree + 'deg)';
 	}
 }
+
+
+
