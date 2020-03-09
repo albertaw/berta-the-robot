@@ -1,0 +1,38 @@
+body {
+  font-family: helvetica;
+}
+
+#container {
+  width: 100%;
+  max-width: 500px;
+  margin: 2em auto;
+}
+
+
+p {
+  padding: 1.25em;
+  border: 1px solid #ced4da;
+  border-radius: .25em;
+  color: #495057;
+}
+
+.form-control {
+	display: inline-block;
+	width: 75%;
+	padding: .75em;
+	font-size: 1em;
+	border: 1px solid #ced4da;
+	border-radius: .25em;
+	color: #495057;
+}
+
+button {
+	color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    display: inline-block;
+    padding: .75em;
+    font-size: 1em;
+    border-radius: .25em;
+   	float: right;
+}
