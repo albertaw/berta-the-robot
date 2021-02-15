@@ -1,0 +1,38 @@
+
+* {
+	box-sizing: border-box;
+}
+
+#world {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 2px solid #000;
+}
+
+.cell {
+	border: 2px solid #000;
+	float:left;
+}
+
+#robot {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	height: 4em;
+	width: 4em;
+	background: url("arrow.png") no-repeat center;
+	z-index: 1;
+}
+
+.gold {
+	/*position: absolute;
+	bottom: 0;
+	left: 0;*/
+	height: 60px;
+	width: 60px;
+	background: darkgoldenrod no-repeat center;
+	/*transform: rotate(45deg);*/
+}
+

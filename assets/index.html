@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="../assets/styles.css" >
+</head>
+<body>
+	<button id="put-gold">put gold</button>
+	<button id="pick-gold">pick gold</button>
+	<button id="move">move</button>
+	<button id="turn-left">turn left</button>
+	<div id="world">
+		<div id="robot"></div>
+	</div>
+
+	<script type="text/javascript" src="../assets/app.js"></script>
+	<script>
+		document.getElementById("put-gold").onclick = putGold;
+		document.getElementById("pick-gold").onclick = pickGold;
+		document.getElementById("move").onclick = move;
+		document.getElementById("turn-left").onclick = turnLeft;
+	</script>
+</body>
+</html>
