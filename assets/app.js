@@ -35,9 +35,12 @@ function initBoard(worldState) {
 				const gold = document.createElement('div');
 				gold.className = 'gold';
 				cell.appendChild(gold);
-				arr.push({gold: gold, cell: cell});
+				arr.push({gold: gold, cell: cell, wall: false});
+			} else if (worldState[i][j] == 1) {
+				cell.style.backgroundColor = 'black';
+				arr.push({ cell: cell, wall: true });
 			} else {
-				arr.push({ cell });
+				arr.push({ cell: cell, wall: false });
 			}
 			row.appendChild(cell);
 			
@@ -48,9 +51,7 @@ function initBoard(worldState) {
 	
 } 
 
-
 function move() {
-	
 	if (frontIsClear()) {
 		if(facingEast()) {
 			currentStateCol += 1;
@@ -115,26 +116,46 @@ function nextToGold() {
 }
 
 function frontIsClear() {
-
 	//for the front to be clear there shuould be 1 more cell
 	//from the current position. 
-	if (currentStateCol < (col-1) && facingEast()) {
-		return true;
+	
+	//check for outer wall
+	if (currentStateCol == (col-1) && facingEast()) {
+		return false;
 	}
 
-	if (currentStateCol > 0 && facingWest()) {
-		return true;
+	else if (currentStateCol == 0 && facingWest()) {
+		return false;
 	}
 
-	if (currentStateRow > 0 && facingNorth()) {
-		return true;
+	else if (currentStateRow == 0 && facingNorth()) {
+		return false;
 	}
 
-	if (currentStateRow < (row-1) && facingSouth()) {
-		return true;
+	else if (currentStateRow == (row-1) && facingSouth()) {
+		return false;
 	}
 
-	return false;
+	//check if an inner wall exists
+	else if (facingEast() && state[currentStateRow][currentStateCol + 1] && state[currentStateRow][currentStateCol + 1].wall)  {
+		return false;
+	}
+
+	else if (facingWest() && state[currentStateRow][currentStateCol - 1] && state[currentStateRow][currentStateCol - 1].wall)  {
+		return false;
+	}
+
+	else if (facingNorth() && state[currentStateRow - 1][currentStateCol] && state[currentStateRow - 1][currentStateCol].wall)  {
+		
+		return false;
+	}
+	
+	else if (facingSouth() && state[currentStateRow + 1][currentStateCol] && state[currentStateRow + 1][currentStateCol].wall )  {
+		
+		return false;
+	}
+
+	return true;
 }
 
 function facingEast() {
@@ -160,4 +181,4 @@ function turnOff() {
 		degree--;
 		robot.style.transform = 'rotate(' + degree + 'deg)';
 	}
-}
+} 
