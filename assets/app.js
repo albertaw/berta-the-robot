@@ -1,30 +1,42 @@
 const robot = document.getElementById('robot');
 const world = document.getElementById('world');
 const cellDimen = 64;
-const row = 6;
-const col = 6;
-let xPos = 0;
-let yPos = 0;
-let degree = 0;
-let direction = 'EAST';
 let worldWidth;
 let worldHeight;
-let state = [];
-let currentStateRow = row - 1;
-let currentStateCol = 0;
+let numRows;
+let numCols;
+let currentRow;
+let currentCol;
+let xPos;
+//increases from bottom to top
+let yPos;
+let degree = 0;
+let direction = 'EAST';
+let worldState = [];
 
-function initBoard(worldState) {
-	worldWidth = cellDimen * col;
-	worldHeight = cellDimen * row;
+function setState(state) {
+	currentRow = state.currentRow;
+	currentCol = state.currentCol;
+	xPos = state.xPos;
+	yPos = state.yPos;
+	worldState = state.world;
+	numRows = state.world.length;
+	numCols = state.world[0].length;
+	worldWidth = cellDimen * numCols;
+	worldHeight = cellDimen * numRows;
+}
+
+function drawBoard() {
 	let cellCount = 0;
 	//add 4 to account for borders on each side
-	world.style.width = cellDimen * col + 4 + 'px';
-	world.style.height = cellDimen * row + 4 + 'px';
-	for (let i = 0; i < row; i++) {
+	world.style.width = worldWidth + 4 + 'px';
+	world.style.height = worldHeight + 4 + 'px';
+	robot.style.left = xPos + 'px';
+	robot.style.bottom = yPos + 'px';
+	for (let i = 0; i < numRows; i++) {
 		let row = document.createElement('div');
 		row.className = 'row';
-		let arr = []
-		for (let j = 0; j < col; j++) {
+		for (let j = 0; j < numCols; j++) {
 			let cell = document.createElement('div');
 			cell.className = 'cell';
 			cell.id = 'cell' + cellCount;
@@ -35,18 +47,17 @@ function initBoard(worldState) {
 				const gold = document.createElement('div');
 				gold.className = 'gold';
 				cell.appendChild(gold);
-				arr.push({gold: gold, cell: cell, wall: false});
+				worldState[i][j] = {gold: gold, cell: cell, wall: false};
 			} else if (worldState[i][j] == 1) {
 				cell.style.backgroundColor = 'black';
-				arr.push({ cell: cell, wall: true });
+				worldState[i][j] = { cell: cell, wall: true };
 			} else {
-				arr.push({ cell: cell, wall: false });
+				worldState[i][j] = { cell: cell, wall: false };
 			}
 			row.appendChild(cell);
 			
 		}
 		world.appendChild(row);
-		state.push(arr);
 	}
 	
 } 
@@ -54,19 +65,19 @@ function initBoard(worldState) {
 function move() {
 	if (frontIsClear()) {
 		if(facingEast()) {
-			currentStateCol += 1;
+			currentCol += 1;
 			xPos += cellDimen;
 			robot.style.left = xPos + 'px';
 		} else if (facingWest()) {
-			currentStateCol -= 1;
+			currentCol -= 1;
 			xPos -= cellDimen;
 			robot.style.left = xPos + 'px';
 		} else if (facingNorth()) {
-			currentStateRow -= 1;
+			currentRow -= 1;
 			yPos += cellDimen;
 			robot.style.bottom = yPos + 'px';
 		} else if (facingSouth()){
-			currentStateRow += 1;
+			currentRow += 1;
 			yPos -= cellDimen;
 			robot.style.bottom = yPos + 'px';
 		}
@@ -96,15 +107,15 @@ function turnLeft() {
 function putGold() {
 	const gold = document.createElement('div');
 	gold.className = 'gold';
-	const cell = state[currentStateRow][currentStateCol].cell;
+	const cell = worldState[currentRow][currentCol].cell;
 	cell.appendChild(gold);
-	state[currentStateRow][currentStateCol].gold = gold;
+	worldState[currentRow][currentCol].gold = gold;
 }
 
 function pickGold() {
-	const elem = state[currentStateRow][currentStateCol].gold;
+	const elem = worldState[currentRow][currentCol].gold;
 	if (elem) {
-		state[currentStateRow][currentStateCol].gold = null
+		worldState[currentRow][currentCol].gold = null
 		elem.remove();
 	} else {
 		turnOff()
@@ -120,37 +131,37 @@ function frontIsClear() {
 	//from the current position. 
 	
 	//check for outer wall
-	if (currentStateCol == (col-1) && facingEast()) {
+	if (currentCol == (numCols-1) && facingEast()) {
 		return false;
 	}
 
-	else if (currentStateCol == 0 && facingWest()) {
+	else if (currentCol == 0 && facingWest()) {
 		return false;
 	}
 
-	else if (currentStateRow == 0 && facingNorth()) {
+	else if (currentRow == 0 && facingNorth()) {
 		return false;
 	}
 
-	else if (currentStateRow == (row-1) && facingSouth()) {
+	else if (currentRow == (numRows-1) && facingSouth()) {
 		return false;
 	}
 
 	//check if an inner wall exists
-	else if (facingEast() && state[currentStateRow][currentStateCol + 1] && state[currentStateRow][currentStateCol + 1].wall)  {
+	else if (facingEast() && worldState[currentRow][currentCol + 1] && worldState[currentRow][currentCol + 1].wall)  {
 		return false;
 	}
 
-	else if (facingWest() && state[currentStateRow][currentStateCol - 1] && state[currentStateRow][currentStateCol - 1].wall)  {
+	else if (facingWest() && worldState[currentRow][currentCol - 1] && worldState[currentRow][currentCol - 1].wall)  {
 		return false;
 	}
 
-	else if (facingNorth() && state[currentStateRow - 1][currentStateCol] && state[currentStateRow - 1][currentStateCol].wall)  {
+	else if (facingNorth() && worldState[currentRow - 1][currentCol] && worldState[currentRow - 1][currentCol].wall)  {
 		
 		return false;
 	}
 	
-	else if (facingSouth() && state[currentStateRow + 1][currentStateCol] && state[currentStateRow + 1][currentStateCol].wall )  {
+	else if (facingSouth() && worldState[currentRow + 1][currentCol] && worldState[currentRow + 1][currentCol].wall )  {
 		
 		return false;
 	}
