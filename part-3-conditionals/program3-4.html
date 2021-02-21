@@ -10,14 +10,24 @@
 	</div>
 	<script src="../assets/app.js"></script>
 	<script>
-		initBoard([
-			[2,2,2,0,0,2],
-			[2,0,0,2,2,0],
-			[2,0,2,2,2,2],
-			[0,0,2,0,2,0],
-			[2,2,2,2,2,2],
-			[2,0,0,2,2,0]
-		]);
+
+		var state = {
+			currentRow: 5,
+			currentCol: 0,
+			xPos: 0,
+			yPos: 0,
+			world: [
+				[2,2,2,0,0,2],
+				[2,0,0,2,2,0],
+				[2,0,2,2,2,2],
+				[0,0,2,0,2,0],
+				[2,2,2,2,2,2],
+				[2,0,0,2,2,0]
+			]
+		}
+
+		setState(state);
+		drawBoard();
 
         //add your code here
 		
