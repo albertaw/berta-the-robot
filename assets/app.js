@@ -1,3 +1,9 @@
+document.body.innerHTML = `
+<div id="world">
+	<div id="robot"></div>
+</div>
+`
+
 const robot = document.getElementById('robot');
 const world = document.getElementById('world');
 const cellDimen = 64;
@@ -24,6 +30,7 @@ function setState(state) {
 	numCols = state.world[0].length;
 	worldWidth = cellDimen * numCols;
 	worldHeight = cellDimen * numRows;
+	direction = state.direction || 'EAST';
 }
 
 function drawBoard() {
@@ -105,11 +112,15 @@ function turnLeft() {
 
 
 function putGold() {
-	const gold = document.createElement('div');
-	gold.className = 'gold';
-	const cell = worldState[currentRow][currentCol].cell;
-	cell.appendChild(gold);
-	worldState[currentRow][currentCol].gold = gold;
+	if (worldState[currentRow][currentCol].gold) {
+		turnOff();
+	} else {
+		const gold = document.createElement('div');
+		gold.className = 'gold';
+		const cell = worldState[currentRow][currentCol].cell;
+		cell.appendChild(gold);
+		worldState[currentRow][currentCol].gold = gold;
+	}
 }
 
 function pickGold() {
@@ -123,7 +134,12 @@ function pickGold() {
 }
 
 function nextToGold() {
-
+	const elem = worldState[currentRow][currentCol].gold;
+	if (elem) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 function frontIsClear() {
@@ -169,6 +185,51 @@ function frontIsClear() {
 	return true;
 }
 
+function leftIsClear() {
+	if (facingEast() && currentRow == 0) {
+		return false;
+	} else if (facingEast() && worldState[currentRow -1][currentCol] && worldState[currentRow -1][currentCol].wall) {
+		return false;
+	} else if (facingWest() && currentRow == (numRows-1)) {
+		return false;
+	} else if (facingWest() && worldState[currentRow + 1][currentCol] && worldState[currentRow + 1][currentCol].wall) {
+		return false;
+	} else if (facingNorth() && currentCol == 0) {
+		return false;
+	} else if (facingNorth() && worldState[currentRow][currentCol - 1] && worldState[currentRow][currentCol - 1].wall) {
+		return false;
+	} else if (facingSouth() && currentCol == (numCols - 1)) {
+		return false;
+	} else if (facingSouth() && worldState[currentRow][currentCol + 1] && worldState[currentRow][currentCol + 1].wall) {
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function rightIsClear() {
+	if (facingEast() && currentRow == (numRows-1)) {
+		return false;
+	} else if (facingEast() && worldState[currentRow + 1][currentCol] && worldState[currentRow + 1][currentCol].wall) {
+		return false;
+	} else if (facingWest() && currentRow == 0) {
+		return false;
+	} else if (facingWest() && worldState[currentRow -1][currentCol] && worldState[currentRow -1][currentCol].wall) {
+		return false;
+	} else if (facingNorth() && currentCol == (numCols - 1)) {
+		return false;
+	} else if (facingNorth() && worldState[currentRow][currentCol + 1] && worldState[currentRow][currentCol + 1].wall) {
+		return false;
+	} else if (facingSouth() && currentCol == 0) {
+		return false;
+	} else if (facingSouth() && worldState[currentRow][currentCol - 1] && worldState[currentRow][currentCol - 1].wall) {
+		return false;
+	} else {
+		return true;
+	}
+	
+}
+
 function facingEast() {
 	return direction == 'EAST';
 }
@@ -193,3 +254,12 @@ function turnOff() {
 		robot.style.transform = 'rotate(' + degree + 'deg)';
 	}
 } 
+
+module.exports = {
+	setState,
+	drawBoard,
+	move,
+	turnLeft,
+	leftIsClear,
+	rightIsClear
+}
