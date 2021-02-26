@@ -10,64 +10,27 @@
 	</div>
 	<script src="../assets/app.js"></script>
 	<script>
+
 		var state = {
 			currentRow: 5,
 			currentCol: 0,
 			xPos: 0,
 			yPos: 0,
 			world: [
-				[0,0,0,0,0,0,0,0],
-				[0,0,0,0,0,0,0,0],
-				[0,1,0,0,0,0,0,0],
-				[0,1,0,0,0,0,1,0],
-				[0,1,0,1,0,0,1,0],
-				[0,1,0,1,0,0,1,0]
+				[2,2,2,0,0,2],
+				[2,0,0,2,2,0],
+				[2,0,2,2,2,2],
+				[0,0,2,0,2,0],
+				[2,2,2,2,2,2],
+				[2,0,0,2,2,0]
 			]
 		}
 
 		setState(state);
 		drawBoard();
-		
-		//add your code here
-		function takeStride() {
-           if (frontIsClear()) {
-               move();
-           } else {
-               jumpHurdle();
-           }
-       }
- 
-       function turnRight() {
-           turnLeft();
-           turnLeft();
-           turnLeft();
-       }
- 
-       function jumpUp() {
-          turnLeft();
-          move();
-          move();
-          turnRight();
-          move();
-      }
-      function jumpDown() {
-          move();
-          turnRight();
-          move();
-          move();
-          turnLeft();
-      }
-      function jumpHurdle() {
-          jumpUp();
-          jumpDown()
-      }
- 
-       takeStride();
-       takeStride();
-       takeStride();
-       takeStride();
 
-		
+		//add your code here
+
 	</script>
 </body>
 </html>
