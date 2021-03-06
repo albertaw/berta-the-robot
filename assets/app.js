@@ -111,7 +111,7 @@ function turnLeft() {
 }
 
 
-function putGold() {
+function putBox() {
 	if (worldState[currentRow][currentCol].gold) {
 		turnOff();
 	} else {
@@ -123,7 +123,7 @@ function putGold() {
 	}
 }
 
-function pickGold() {
+function pickBox() {
 	const elem = worldState[currentRow][currentCol].gold;
 	if (elem) {
 		worldState[currentRow][currentCol].gold = null
@@ -133,7 +133,7 @@ function pickGold() {
 	}
 }
 
-function nextToGold() {
+function nextToBox() {
 	const elem = worldState[currentRow][currentCol].gold;
 	if (elem) {
 		return true;
